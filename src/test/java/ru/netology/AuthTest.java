@@ -1,10 +1,12 @@
-import ru.netology.DataGenerator;
+package ru.netology;
+
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -20,14 +22,13 @@ public class AuthTest {
 
     @Test
     @DisplayName("Should successfully login with active registered user")
-    void shouldSuccessfulLoginIfRegisteredActiveUser() {
+    void shouldSuccessfulLoginIfRegisteredActiveUser() throws InterruptedException {
 
         var registeredUser = DataGenerator.Registration.getRegisteredUser("active");
-
         form.$("[data-test-id=login] input").setValue(registeredUser.getLogin());
         form.$("[data-test-id=password] input").setValue(registeredUser.getPassword());
         $("[data-test-id=action-login]").click();
-        $("[id=root] .heading").shouldHave(exactText("  Личный кабинет"));
+        $(".heading").shouldHave(exactText("  Личный кабинет"));
 
     }
 
@@ -45,8 +46,8 @@ public class AuthTest {
     @Test
     @DisplayName("Should get error message if login with blocked registered user")
     void shouldGetErrorIfBlockedUser() {
-        var blockedUser = DataGenerator.Registration.getRegisteredUser("blocked");
 
+        var blockedUser = DataGenerator.Registration.getRegisteredUser("blocked");
         form.$("[data-test-id=login] input").setValue(blockedUser.getLogin());
         form.$("[data-test-id=password] input").setValue(blockedUser.getPassword());
         $("[data-test-id=action-login]").click();
@@ -57,6 +58,7 @@ public class AuthTest {
     @Test
     @DisplayName("Should get error message if login with wrong login")
     void shouldGetErrorIfWrongLogin() {
+
         var registeredUser = DataGenerator.Registration.getRegisteredUser("active");
         var wrongLogin = DataGenerator.getRandomLogin();
         form.$("[data-test-id=login] input").setValue(wrongLogin);
@@ -69,6 +71,7 @@ public class AuthTest {
     @Test
     @DisplayName("Should get error message if login with wrong password")
     void shouldGetErrorIfWrongPassword() {
+
         var registeredUser = DataGenerator.Registration.getRegisteredUser("active");
         var wrongPassword = DataGenerator.getRandomPassword();
         form.$("[data-test-id=login] input").setValue(registeredUser.getLogin());

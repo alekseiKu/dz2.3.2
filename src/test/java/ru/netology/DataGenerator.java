@@ -8,9 +8,6 @@ import lombok.Value;
 
 import static io.restassured.RestAssured.given;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.restassured.http.ContentType;
 
 public class DataGenerator {
@@ -21,8 +18,7 @@ public class DataGenerator {
 
     private static final RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
-            .setPort(9999)
-            .setAccept(ContentType.JSON)
+            .setPort(9999).setAccept(ContentType.JSON)
             .setContentType(ContentType.JSON)
             .log(LogDetail.ALL)
             .build();
@@ -40,14 +36,12 @@ public class DataGenerator {
 
     public static String getRandomLogin() {
 
-        String login = String.valueOf(faker.name().firstName());
-        return login;
+        return faker.name().firstName();
     }
 
     public static String getRandomPassword() {
 
-        String password = String.valueOf(faker.internet().password());
-        return password;
+        return faker.internet().password();
     }
 
     public static class Registration {
@@ -56,8 +50,7 @@ public class DataGenerator {
 
         public static RegistrationDto getUser(String status) {
 
-            RegistrationDto user = new RegistrationDto(getRandomLogin(), getRandomPassword(), status);
-            return user;
+            return new RegistrationDto(getRandomLogin(), getRandomPassword(), status);
         }
 
         public static RegistrationDto getRegisteredUser(String status) {
